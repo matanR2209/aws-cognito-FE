@@ -13,11 +13,13 @@ const POOL_DATA = {
     UserPoolId: 'us-east-2_LLdTd8MKQ',
     ClientId: 'nrn6b4a027tcobk82pgdr995e'
 }
-const userPool = new CognitoUserPool(POOL_DATA)
+const userPool = new CognitoUserPool(POOL_DATA);
 
-// user name: matanSalaryo
-// email: "matan@salaryo.com"
-// password: "matan2209"
+const DEV_CREDENTIALS = {
+    username: 'testUer',
+    password: 'test1234',
+    email: 'm.atan2209@gmail.com'
+};
 
 export default class AuthService {
     public static authIsLoading = new BehaviorSubject<boolean>(false);
@@ -77,7 +79,7 @@ export default class AuthService {
         });
     }
 
-    public static signIn(username: string, password: string): void {
+    public static signIn(username: string = DEV_CREDENTIALS.username, password: string = DEV_CREDENTIALS.password): void {
         this.authIsLoading.next(true);
         const authData = {
             Username: username,

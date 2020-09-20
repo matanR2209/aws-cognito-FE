@@ -54,6 +54,7 @@ export default function SignIn(props: IProps) {
 
     return (
         <Card className={classes.cardContainer} variant="outlined">
+            <div>Sign in</div>
             <CardContent className={classes.cardContent}>
                 <TextField className={classes.input} onChange={onUserNameChange} label="Username" variant="outlined" />
                 <TextField className={classes.input} onChange={onPasswordChange} label="Password" type={"password"} variant="outlined" />

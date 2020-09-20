@@ -74,6 +74,7 @@ export default function SignUp(props: IProps) {
     return (
         <>
             <Card className={classes.cardContainer} variant="outlined">
+                <div>Sign up</div>
                 <CardContent className={classes.cardContent}>
                     <TextField onChange={onUserNameChange} className={classes.input} label="Username" variant="outlined" />
                     <TextField onChange={onEmailChange} className={classes.input} label="Email" variant="outlined" />
