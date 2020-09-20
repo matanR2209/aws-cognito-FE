@@ -1,20 +1,12 @@
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import {CognitoUser, CognitoUserAttribute, CognitoUserPool} from 'amazon-cognito-identity-js'
 import { User } from './user.model';
-
-const POOL_DATA = {
-    UserPoolId: 'us-east-2_LLdTd8MKQ',
-    ClientId: 'nrn6b4a027tcobk82pgdr995e'
-}
-const userPool = new CognitoUserPool(POOL_DATA);
 
 export default class AuthService {
     public static authIsLoading = new BehaviorSubject<boolean>(false);
     public static authDidFail = new BehaviorSubject<boolean>(false);
     public static authStatusChanged = new Subject<boolean>();
-    public static registeredUser: CognitoUser;
 
     public static signUp(username: string, email: string, password: string): void {
         this.authIsLoading.next(true);
