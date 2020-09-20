@@ -1,7 +1,12 @@
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import {CognitoUser, CognitoUserAttribute, CognitoUserPool} from 'amazon-cognito-identity-js'
+import {
+    CognitoUser,
+    CognitoUserAttribute,
+    CognitoUserPool,
+    AuthenticationDetails, CognitoUserSession
+} from 'amazon-cognito-identity-js'
 import { User } from './user.model';
 
 const POOL_DATA = {
@@ -9,6 +14,10 @@ const POOL_DATA = {
     ClientId: 'nrn6b4a027tcobk82pgdr995e'
 }
 const userPool = new CognitoUserPool(POOL_DATA)
+
+// user name: matanSalaryo
+// email: "matan@salaryo.com"
+// password: "matan2209"
 
 export default class AuthService {
     public static authIsLoading = new BehaviorSubject<boolean>(false);
@@ -67,15 +76,37 @@ export default class AuthService {
             }
         });
     }
+
     public static signIn(username: string, password: string): void {
         this.authIsLoading.next(true);
         const authData = {
             Username: username,
             Password: password
         };
+        const authDetails = new AuthenticationDetails(authData)
+        const userData = {
+            Username: username,
+            Pool: userPool
+        };
+
+        const cognitoUser = new CognitoUser(userData);
+        cognitoUser.authenticateUser(authDetails, {
+            onSuccess: (result: CognitoUserSession) => {
+                console.log(result);
+                this.authStatusChanged.next(true);
+                this.authDidFail.next(false);
+                this.authIsLoading.next(false);
+            },
+            onFailure: (err) => {
+                this.authDidFail.next(true);
+                this.authIsLoading.next(false);
+                console.log(err);
+            }
+        })
         this.authStatusChanged.next(true);
         return;
     }
+
     public static getAuthenticatedUser(): boolean {return  false}
     public static logout() {
         this.authStatusChanged.next(false);

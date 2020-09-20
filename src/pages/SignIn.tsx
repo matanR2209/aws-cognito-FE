@@ -37,7 +37,7 @@ export default function SignIn(props: IProps) {
     const classes = useStyles();
     let [userNameValue] = React.useState('');
     let [passValue] = React.useState('');
-    const onEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onUserNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         userNameValue = event.target.value
     };
 
@@ -55,7 +55,7 @@ export default function SignIn(props: IProps) {
     return (
         <Card className={classes.cardContainer} variant="outlined">
             <CardContent className={classes.cardContent}>
-                <TextField className={classes.input} onChange={onEmailChange} label="Email" variant="outlined" />
+                <TextField className={classes.input} onChange={onUserNameChange} label="Username" variant="outlined" />
                 <TextField className={classes.input} onChange={onPasswordChange} label="Password" type={"password"} variant="outlined" />
             </CardContent>
             <CardActions className={classes.actions}>
