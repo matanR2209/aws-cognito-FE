@@ -5,7 +5,7 @@ import {CognitoUser, CognitoUserAttribute, CognitoUserPool} from 'amazon-cognito
 import { User } from './user.model';
 
 const POOL_DATA = {
-    UserPoolId: ' us-east-2_LLdTd8MKQ',
+    UserPoolId: 'us-east-2_LLdTd8MKQ',
     ClientId: 'nrn6b4a027tcobk82pgdr995e'
 }
 const userPool = new CognitoUserPool(POOL_DATA)
@@ -47,11 +47,25 @@ export default class AuthService {
         });
         return;
     }
+
     public static confirmUser(username: string, code: string) {
         this.authIsLoading.next(true);
         const userData = {
             Username: username,
+            Pool: userPool
         };
+        const cognitoUser = new CognitoUser(userData);
+        cognitoUser.confirmRegistration(code, true, (err, result) => {
+            if(err) {
+                this.authDidFail.next(true);
+                this.authIsLoading.next(false);
+                return;
+            }else {
+                this.authDidFail.next(false);
+                this.authIsLoading.next(false);
+                console.log(result)
+            }
+        });
     }
     public static signIn(username: string, password: string): void {
         this.authIsLoading.next(true);

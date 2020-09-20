@@ -35,9 +35,10 @@ export default function SignUp(props: IProps) {
 
     let [emailValue] = React.useState('');
     let [userNameValue] = React.useState('');
+    let [userNameValidagtionValue] = React.useState('');
+    let [userNameValidagtionCodeValue] = React.useState('');
     let [passValue] = React.useState('');
     let [rePassValue] = React.useState('');
-
 
     const onUserNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         userNameValue = event.target.value
@@ -54,23 +55,46 @@ export default function SignUp(props: IProps) {
         rePassValue = event.target.value
     };
 
+    const onUserNameValidationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        userNameValidagtionValue = event.target.value
+    };
+
+    const onValidationCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        userNameValidagtionCodeValue = event.target.value
+    };
+
     const submitForm = () => {
-        console.log(userNameValue, emailValue, passValue, rePassValue);
         AuthService.signUp(userNameValue, emailValue, passValue)
     };
 
+    const confirmUser = () => {
+        AuthService.confirmUser(userNameValidagtionValue, userNameValidagtionCodeValue)
+    };
+
     return (
-        <Card className={classes.cardContainer} variant="outlined">
-            <CardContent className={classes.cardContent}>
-                <TextField onChange={onUserNameChange} className={classes.input} label="Username" variant="outlined" />
-                <TextField onChange={onEmailChange} className={classes.input} label="Email" variant="outlined" />
-                <TextField onChange={onPasswordChange} className={classes.input} label="Password" type={"password"} variant="outlined" />
-                <TextField onChange={onRePasswordChange} className={classes.input} label="Repeat password" type={"password"} variant="outlined" />
-            </CardContent>
-            <CardActions className={classes.actions}>
-                <Button onClick={submitForm}>Submit</Button>
-                <Button>Confirm user</Button>
-            </CardActions>
-        </Card>
+        <>
+            <Card className={classes.cardContainer} variant="outlined">
+                <CardContent className={classes.cardContent}>
+                    <TextField onChange={onUserNameChange} className={classes.input} label="Username" variant="outlined" />
+                    <TextField onChange={onEmailChange} className={classes.input} label="Email" variant="outlined" />
+                    <TextField onChange={onPasswordChange} className={classes.input} label="Password" type={"password"} variant="outlined" />
+                    <TextField onChange={onRePasswordChange} className={classes.input} label="Repeat password" type={"password"} variant="outlined" />
+                </CardContent>
+                <CardActions className={classes.actions}>
+                    <Button onClick={submitForm}>Submit</Button>
+                </CardActions>
+            </Card>
+
+            <Card className={classes.cardContainer} variant="outlined">
+                <CardContent className={classes.cardContent}>
+                    <div>Confirm your account</div>
+                    <TextField onChange={onUserNameValidationChange} className={classes.input} label="Username" variant="outlined" />
+                    <TextField onChange={onValidationCodeChange} className={classes.input} label="Validation code" variant="outlined" />
+                </CardContent>
+                <CardActions className={classes.actions}>
+                    <Button onClick={confirmUser}>Confirm account</Button>
+                </CardActions>
+            </Card>
+        </>
     );
 }
