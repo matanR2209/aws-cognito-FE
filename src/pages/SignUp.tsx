@@ -6,6 +6,7 @@ import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import AuthService from "../services/AuthService";
+import {CardHeader} from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -74,7 +75,7 @@ export default function SignUp(props: IProps) {
     return (
         <>
             <Card className={classes.cardContainer} variant="outlined">
-                <div>Sign up</div>
+                <CardHeader title="Sign Up"/>
                 <CardContent className={classes.cardContent}>
                     <TextField onChange={onUserNameChange} className={classes.input} label="Username" variant="outlined" />
                     <TextField onChange={onEmailChange} className={classes.input} label="Email" variant="outlined" />
@@ -82,18 +83,18 @@ export default function SignUp(props: IProps) {
                     <TextField onChange={onRePasswordChange} className={classes.input} label="Repeat password" type={"password"} variant="outlined" />
                 </CardContent>
                 <CardActions className={classes.actions}>
-                    <Button onClick={submitForm}>Submit</Button>
+                    <Button color="primary" variant="contained" onClick={submitForm}>Submit</Button>
                 </CardActions>
             </Card>
 
             <Card className={classes.cardContainer} variant="outlined">
                 <CardContent className={classes.cardContent}>
-                    <div>Confirm your account</div>
+                    <CardHeader title="Confirm your account"/>
                     <TextField onChange={onUserNameValidationChange} className={classes.input} label="Username" variant="outlined" />
                     <TextField onChange={onValidationCodeChange} className={classes.input} label="Validation code" variant="outlined" />
                 </CardContent>
                 <CardActions className={classes.actions}>
-                    <Button onClick={confirmUser}>Confirm account</Button>
+                    <Button color="primary" variant="contained" onClick={confirmUser}>Confirm account</Button>
                 </CardActions>
             </Card>
         </>

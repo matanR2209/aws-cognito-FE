@@ -6,6 +6,7 @@ import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import AuthService from "../services/AuthService";
+import {CardHeader} from "@material-ui/core";
 
 
 
@@ -54,13 +55,13 @@ export default function SignIn(props: IProps) {
 
     return (
         <Card className={classes.cardContainer} variant="outlined">
-            <div>Sign in</div>
+            <CardHeader title="Sign In"/>
             <CardContent className={classes.cardContent}>
                 <TextField className={classes.input} onChange={onUserNameChange} label="Username" variant="outlined" />
                 <TextField className={classes.input} onChange={onPasswordChange} label="Password" type={"password"} variant="outlined" />
             </CardContent>
             <CardActions className={classes.actions}>
-                <Button onClick={submitForm}>Submit</Button>
+                <Button color="primary" variant="contained" onClick={submitForm}>Submit</Button>
             </CardActions>
         </Card>
     );
