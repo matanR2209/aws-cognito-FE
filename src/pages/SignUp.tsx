@@ -5,7 +5,6 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import AuthService from "../services/AuthService";
 import {CardHeader} from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -29,17 +28,19 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-interface IProps {}
+interface IProps {
+    onSubmitSignUp: (username: string, email: string, pass: string) => void
+    onSubmitConfirm: (username: string, code: string) => void
+}
 
 export default function SignUp(props: IProps) {
     const classes = useStyles();
 
     let [emailValue] = React.useState('');
     let [userNameValue] = React.useState('');
-    let [userNameValidagtionValue] = React.useState('');
-    let [userNameValidagtionCodeValue] = React.useState('');
+    let [userNameValidationValue] = React.useState('');
+    let [userNameValidationCodeValue] = React.useState('');
     let [passValue] = React.useState('');
-    let [rePassValue] = React.useState('');
 
     const onUserNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         userNameValue = event.target.value
@@ -52,24 +53,22 @@ export default function SignUp(props: IProps) {
         passValue = event.target.value
     };
 
-    const onRePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        rePassValue = event.target.value
-    };
-
     const onUserNameValidationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        userNameValidagtionValue = event.target.value
+        userNameValidationValue = event.target.value
     };
 
     const onValidationCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        userNameValidagtionCodeValue = event.target.value
+        userNameValidationCodeValue = event.target.value
     };
 
     const submitForm = () => {
-        AuthService.signUp(userNameValue, emailValue, passValue)
+        console.log("Submit");
+        props.onSubmitSignUp(userNameValue, emailValue, passValue);
     };
 
     const confirmUser = () => {
-        AuthService.confirmUser(userNameValidagtionValue, userNameValidagtionCodeValue)
+        console.log("confirmUser");
+        props.onSubmitConfirm(userNameValidationValue, userNameValidationCodeValue);
     };
 
     return (
@@ -80,7 +79,6 @@ export default function SignUp(props: IProps) {
                     <TextField onChange={onUserNameChange} className={classes.input} label="Username" variant="outlined" />
                     <TextField onChange={onEmailChange} className={classes.input} label="Email" variant="outlined" />
                     <TextField onChange={onPasswordChange} className={classes.input} label="Password" type={"password"} variant="outlined" />
-                    <TextField onChange={onRePasswordChange} className={classes.input} label="Repeat password" type={"password"} variant="outlined" />
                 </CardContent>
                 <CardActions className={classes.actions}>
                     <Button color="primary" variant="contained" onClick={submitForm}>Submit</Button>

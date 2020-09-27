@@ -5,11 +5,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import AuthService from "../services/AuthService";
 import {CardHeader} from "@material-ui/core";
-
-
-
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -32,12 +28,21 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-interface IProps {}
+const DEV_CREDENTIALS = {
+    username: 'testUser',
+    password: 'test1234',
+    email: 'm.atan2209@gmail.com'
+};
+
+interface IProps {
+    onSubmit: (user: string, pass: string) => void
+}
 
 export default function SignIn(props: IProps) {
     const classes = useStyles();
     let [userNameValue] = React.useState('');
     let [passValue] = React.useState('');
+
     const onUserNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         userNameValue = event.target.value
     };
@@ -47,10 +52,8 @@ export default function SignIn(props: IProps) {
     };
 
     const submitForm = () => {
-        AuthService.signIn(userNameValue, passValue);
-
-
-
+        // props.onSubmit(userNameValue, passValue);
+        props.onSubmit(DEV_CREDENTIALS.username, DEV_CREDENTIALS.password);
     };
 
     return (

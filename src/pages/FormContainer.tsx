@@ -1,81 +1,93 @@
 import * as React from 'react';
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
-import {useEffect} from "react";
-import AuthService from "../services/AuthService";
-import {List} from "@material-ui/core";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import CompareForm from "./CompareForm";
+import {navBarItem} from "../types/FormPages";
+import NavBar from "../components/NavBar";
+import {stores} from "../state";
+import {observer} from "mobx-react";
 
-
-
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        naVbar: {
-            display: "flex",
-            flexDirection: "row"
-        },
-        selected: {
-            backgroundColor: "white"
-        },
-        listItem: {
-            textAlign: "center"
-        }
-    }),
-);
-
-
-
-interface IProps {}
-
-enum loginStatus {
-    signIn = 'signIn',
-    signUp= 'signUp'
-}
+const authStore = stores.authStore;
 
 interface ILocalState {
-    currentPage: loginStatus
+    currentNavBarItem: navBarItem
 }
 
-export default function FormContainer(props: IProps) {
-    const classes = useStyles();
-    const [currentPage, setValue] = React.useState( loginStatus.signIn);
+@observer
+export default class FormContainer extends React.Component {
+    public state: ILocalState = {
+        currentNavBarItem: navBarItem.signIn
+    };
 
-    useEffect(() => {
-        AuthService.initAuth();
-    });
-
-    const updateForm = (newPage: loginStatus) => {
-        setValue(newPage)
+    public componentDidMount() {
+        authStore.isAuthenticated();
     }
 
-    const isSelected =(page: loginStatus): boolean => {
-        return page === currentPage;
+    public render() {
+        return (
+            <>
+                <NavBar items={this.getNavBatItems()}/>
+                {this.renderPageContent()}
+            </>
+        )
     }
 
-    return (
-        <div>
+    private updateForm = (itemSelected: navBarItem) => {
+        const newState = this.state;
+        newState.currentNavBarItem = itemSelected;
+        this.setState(newState);
+    };
 
-            <List component="nav" className={classes.naVbar} >
-                <ListItem
-                    button
-                    className={classes.listItem}
-                    selected={currentPage === loginStatus.signIn}
-                    onClick={() => updateForm(loginStatus.signIn)}
-                >
-                    <ListItemText primary="Sign in" />
-                </ListItem>
-                <ListItem
-                    button
-                    className={classes.listItem}
-                    selected={currentPage === loginStatus.signUp}
-                    onClick={() => updateForm(loginStatus.signUp)}
-                >
-                    <ListItemText primary="Sign up"/>
-                </ListItem>
-            </List>
-            {currentPage === loginStatus.signUp? <SignUp/> : <SignIn/>}
-        </div>
-    );
+    private submitSignInForm = ( userName: string, password: string ) => {
+        authStore.signIn(userName, password);
+    };
+
+    private submitSignUpForm = (username: string, email: string, pass: string) => {
+        authStore.signUp(username, email, pass)
+    }
+
+    private submitConfirmation = (username: string, code: string) => {
+        authStore.confirmUser(username, code);
+    }
+
+    private renderPageContent = () => {
+        if(authStore.isLogged) {
+            return <CompareForm/>
+        } else {
+            switch (this.state.currentNavBarItem) {
+                case navBarItem.signIn: return <SignIn onSubmit={this.submitSignInForm}/>;
+                case navBarItem.signUp: return <SignUp onSubmitSignUp={this.submitSignUpForm} onSubmitConfirm={this.submitConfirmation}/>;
+            }
+        }
+    };
+
+    private logout =() => {
+        authStore.logout();
+    };
+
+    private getNavBatItems = () => {
+        if(!authStore.isLogged) {
+            return [
+                {
+                    value: navBarItem.signIn,
+                    isSelected: this.state.currentNavBarItem === navBarItem.signIn,
+                    click: this.updateForm
+                },
+                {
+                    value: navBarItem.signUp,
+                    isSelected: this.state.currentNavBarItem === navBarItem.signUp,
+                    click: this.updateForm
+                }
+            ]
+        } else {
+            return [
+                {
+                    value: navBarItem.logout,
+                    isSelected: this.state.currentNavBarItem === navBarItem.logout,
+                    click: this.logout
+                }
+            ]
+        }
+    }
+
 }
