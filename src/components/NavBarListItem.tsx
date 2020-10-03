@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import {navBarItem} from "../types/FormPages";
+import {NavBarItem} from "../types/FormPages";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -12,9 +12,9 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 interface IProps {
-    itemValue: navBarItem
+    itemValue: NavBarItem
     isSelected: boolean;
-    onClick: (itemSelected: navBarItem) => void;
+    onClick: (itemSelected: NavBarItem) => void;
 }
 
 export default function NavBarListItem(props: IProps) {

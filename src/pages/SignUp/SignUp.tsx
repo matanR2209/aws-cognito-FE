@@ -29,46 +29,44 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IProps {
-    onSubmitSignUp: (username: string, email: string, pass: string) => void
-    onSubmitConfirm: (username: string, code: string) => void
+    onSubmitSignUp: () => void;
+    onSubmitConfirm: () => void;
+    onUserNameChange: (value: string) => void;
+    onPasswordChange: (value: string) => void;
+    onEmailChange: (value: string) => void;
+    onUserNameValidationChange: (value: string) => void;
+    onValidationCodeChange: (value: string) => void;
 }
 
 export default function SignUp(props: IProps) {
     const classes = useStyles();
 
-    let [emailValue] = React.useState('');
-    let [userNameValue] = React.useState('');
-    let [userNameValidationValue] = React.useState('');
-    let [userNameValidationCodeValue] = React.useState('');
-    let [passValue] = React.useState('');
-
     const onUserNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        userNameValue = event.target.value
+        props.onUserNameChange(event.target.value)
     };
 
     const onEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        emailValue = event.target.value
+        props.onEmailChange(event.target.value)
     };
     const onPasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        passValue = event.target.value
+        props.onPasswordChange(event.target.value)
     };
 
     const onUserNameValidationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        userNameValidationValue = event.target.value
+        props.onUserNameValidationChange(event.target.value);
     };
 
     const onValidationCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        userNameValidationCodeValue = event.target.value
+        props.onValidationCodeChange(event.target.value)
     };
 
     const submitForm = () => {
-        console.log("Submit");
-        props.onSubmitSignUp(userNameValue, emailValue, passValue);
+        props.onSubmitSignUp();
     };
 
     const confirmUser = () => {
         console.log("confirmUser");
-        props.onSubmitConfirm(userNameValidationValue, userNameValidationCodeValue);
+        props.onSubmitConfirm();
     };
 
     return (

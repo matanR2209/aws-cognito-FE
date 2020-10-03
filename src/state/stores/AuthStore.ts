@@ -25,7 +25,6 @@ export default class AuthStore {
     public registeredUser: CognitoUser | undefined = undefined;
 
     public signUp(username: string, email: string, password: string): void {
-        // this.authIsLoading.next(true);
         const user: User = {
             username: username,
             email: email,

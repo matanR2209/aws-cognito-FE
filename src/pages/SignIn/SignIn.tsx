@@ -28,32 +28,25 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const DEV_CREDENTIALS = {
-    username: 'testUser',
-    password: 'test1234',
-    email: 'm.atan2209@gmail.com'
-};
-
 interface IProps {
-    onSubmit: (user: string, pass: string) => void
+    onSubmit: () => void
+    onPasswordChange: (value: string) => void;
+    onUsernameChange: (value: string) => void;
 }
 
 export default function SignIn(props: IProps) {
     const classes = useStyles();
-    let [userNameValue] = React.useState('');
-    let [passValue] = React.useState('');
 
     const onUserNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        userNameValue = event.target.value
+        props.onUsernameChange(event.target.value)
     };
 
     const onPasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        passValue = event.target.value
+        props.onPasswordChange(event.target.value)
     };
 
     const submitForm = () => {
-        // props.onSubmit(userNameValue, passValue);
-        props.onSubmit(DEV_CREDENTIALS.username, DEV_CREDENTIALS.password);
+        props.onSubmit();
     };
 
     return (

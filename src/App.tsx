@@ -1,10 +1,10 @@
 import React from 'react';
-import FormContainer from "./pages/FormContainer";
+import CompareYourselfAppContainer from "./pages/CompareYourselfAppContainer";
 
 function App() {
   return (
         <div className="App">
-          <FormContainer/>
+          <CompareYourselfAppContainer/>
         </div>
   );
 }

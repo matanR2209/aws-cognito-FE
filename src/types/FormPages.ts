@@ -1,11 +1,12 @@
-export enum pageStatus {
-    signIn = 'signIn',
-    signUp = 'signUp',
-    form = 'form'
+export enum ApplicationPages {
+    SignIn = 'signIn',
+    SignUp = 'signUp',
+    Form = 'form',
+    Results = 'results'
 }
 
-export enum navBarItem {
-    signIn = 'Sign in',
-    signUp = 'Sign up',
-    logout = 'Log out'
+export enum NavBarItem {
+    SignIn = 'Sign in',
+    SignUp = 'Sign up',
+    Logout = 'Log out'
 }

@@ -28,28 +28,28 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-interface IProps {}
+interface IProps {
+    submitForm: () => void
+    onAgeChange: (value: string) => void
+    onHeightChange: (value: string) => void
+    onIncomeChange: (value: string) => void
+}
 
 export default function CompareForm(props: IProps) {
     const classes = useStyles();
-
-    let [ageValue] = React.useState('');
-    let [heightValue] = React.useState('');
-    let [incomeValue] = React.useState('');
-
     const onAgeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        ageValue = event.target.value
+        props.onAgeChange(event.target.value);
     };
 
     const onHeightChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        heightValue = event.target.value
+        props.onHeightChange(event.target.value)
     };
     const onIncomeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        incomeValue = event.target.value
+        props.onIncomeChange(event.target.value);
     };
 
     const submitForm = () => {
-        console.log(ageValue, heightValue, incomeValue);
+        props.submitForm();
     };
 
     return (
@@ -62,7 +62,7 @@ export default function CompareForm(props: IProps) {
                     <TextField onChange={onIncomeChange} className={classes.input} label="Income" variant="outlined" />
                 </CardContent>
                 <CardActions className={classes.actions}>
-                    <Button color="primary" variant="contained" onClick={submitForm}>Compare</Button>
+                    <Button color="primary" variant="contained" onClick={submitForm}>Submit</Button>
                 </CardActions>
             </Card>
         </>
