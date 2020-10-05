@@ -8,6 +8,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 import {List} from "@material-ui/core";
+import {CompareData} from "../../types/compareData";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -43,14 +44,35 @@ const useStyles = makeStyles((theme: Theme) =>
         actions: {
             display: "flex",
             justifyContent: "space-around"
+        },
+        allResultsList: {
+            width: "50%",
+            margin: "auto"
+        },
+        resultListItem: {
+            textAlign: "center",
         }
     }),
 );
 
-interface IProps {}
+interface IProps {
+    allUsersCompareDate: CompareData[] | undefined;
+    userCompareDate: CompareData | undefined;
+    retrieveAllResults: (param: string) => void;
+    deleteUseData: () => void;
+}
 
 export default function ResultsPage(props: IProps) {
     const classes = useStyles();
+
+    const getAllResults = () => {
+        props.retrieveAllResults("all");
+    };
+
+    const deleteUser = () => {
+        props.deleteUseData();
+    };
+
     return (
         <>
             <Card className={classes.cardContainer} variant="outlined">
@@ -58,23 +80,23 @@ export default function ResultsPage(props: IProps) {
                 <CardContent className={classes.cardContent}>
                     <div className={classes.actionsContainer}>
                         <Button variant="contained">Set Data</Button>
-                        <Button variant="contained" color="secondary">Clear data on server</Button>
-                        <Button variant="contained" color="primary">Get results</Button>
+                        <Button variant="contained" color="secondary" onClick={deleteUser}>Clear data on server</Button>
+                        <Button variant="contained" color="primary" onClick={getAllResults}>Get results</Button>
                     </div>
                 </CardContent>
                 <CardHeader title="Select filter"/>
                 <CardContent className={classes.cardContent}>
                     <List>
                         <ListItem button>
-                            <ListItemText primary={`your age: `} />
+                            <ListItemText primary={`your age: ${props.userCompareDate?.age}`} />
                         </ListItem>
                         <Divider />
                         <ListItem button>
-                            <ListItemText primary={`your height: `} />
+                            <ListItemText primary={`your height: ${props.userCompareDate?.height}`} />
                         </ListItem>
                         <Divider />
                         <ListItem button>
-                            <ListItemText primary={`your income: `} />
+                            <ListItemText primary={`your income: ${props.userCompareDate?.income}`} />
                         </ListItem>
                         <Divider />
                     </List>
@@ -90,6 +112,18 @@ export default function ResultsPage(props: IProps) {
                     </div>
                 </CardContent>
             </Card>
+
+            <List className={classes.allResultsList}>
+                {props.allUsersCompareDate?.map((user: CompareData, index: number) => {
+                    return <>
+                        <ListItem className={classes.resultListItem}>
+                            <ListItemText primary= {`age: ${user.age}, height: ${user.height}, income: ${user.income}`} />
+                        </ListItem>
+                        <Divider/>
+                    </>
+                })}
+            </List>
+
         </>
     );
 }

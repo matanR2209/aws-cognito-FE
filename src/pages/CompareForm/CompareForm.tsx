@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface IProps {
     submitForm: () => void
+    onRequestData: (param: string) => void;
     onAgeChange: (value: string) => void
     onHeightChange: (value: string) => void
     onIncomeChange: (value: string) => void
@@ -52,6 +53,10 @@ export default function CompareForm(props: IProps) {
         props.submitForm();
     };
 
+    const retrieveUserData = () => {
+        props.onRequestData("single");
+    };
+
     return (
         <>
             <Card className={classes.cardContainer} variant="outlined">
@@ -63,6 +68,10 @@ export default function CompareForm(props: IProps) {
                 </CardContent>
                 <CardActions className={classes.actions}>
                     <Button color="primary" variant="contained" onClick={submitForm}>Submit</Button>
+                </CardActions>
+
+                <CardActions className={classes.actions}>
+                    <Button color="primary" variant="contained" onClick={retrieveUserData}>Get my data from server</Button>
                 </CardActions>
             </Card>
         </>

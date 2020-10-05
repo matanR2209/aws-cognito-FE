@@ -14,14 +14,14 @@ const compareStore = stores.compareStore;
 
 interface ILocalState {
     currentNavBarItem: NavBarItem;
-    currentPage: ApplicationPages
+    currentPage: ApplicationPages;
 }
 
 @observer
 export default class CompareYourselfAppContainer extends React.Component {
     public state: ILocalState = {
         currentNavBarItem: NavBarItem.SignIn,
-        currentPage: ApplicationPages.SignIn
+        currentPage: ApplicationPages.SignIn,
     };
 
     public componentDidMount() {
@@ -60,8 +60,15 @@ export default class CompareYourselfAppContainer extends React.Component {
     private renderPageContent = () => {
         if(authStore.isLogged) {
             switch (this.state.currentPage) {
-                case ApplicationPages.Results: return <ResultsPageContainer />;
-                default: return <CompareFormContainer onSendCompare={this.sendCompareData}/>
+                case ApplicationPages.Results: return <ResultsPageContainer
+                    deleteUseData={this.deleteUseData}
+                    retrieveAllResults={this.retrieveData}
+                    allUsersCompareDate={compareStore.allUsersData}
+                    userCompareDate={compareStore.singleUserData} />;
+
+                default: return <CompareFormContainer
+                    onSendDataRequest={this.retrieveData}
+                    onSendCompare={this.sendCompareData}/>
             }
         } else {
             switch (this.state.currentPage) {
@@ -99,6 +106,39 @@ export default class CompareYourselfAppContainer extends React.Component {
             }
             const token = session.getIdToken().getJwtToken();
             const response = await compareStore.storeData(compareData, token);
+            if(response) {
+                const newState = this.state;
+                newState.currentPage = ApplicationPages.Results;
+                this.setState(newState);
+            }
+
+        });
+    }
+
+    private retrieveData = (param: string) => {
+        authStore.getAuthenticatedUser()?.getSession( async (err: any, session: any) => {
+            if(err) {
+                console.log(err);
+                return;
+            }
+            const response = await compareStore.retrieveData(session, param);
+            if(response) {
+                const newState = this.state;
+                newState.currentPage = ApplicationPages.Results;
+                this.setState(newState);
+            }
+
+        });
+    }
+
+    private deleteUseData = () => {
+        authStore.getAuthenticatedUser()?.getSession( async (err: any, session: any) => {
+            if(err) {
+                console.log(err);
+                return;
+            }
+            const token = session.getIdToken().getJwtToken();
+            const response = await compareStore.deleteData(token);
             if(response) {
                 const newState = this.state;
                 newState.currentPage = ApplicationPages.Results;

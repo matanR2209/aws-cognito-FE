@@ -5,6 +5,7 @@ import {observer} from "mobx-react";
 
 interface IProps {
     onSendCompare: (data: CompareData) => void;
+    onSendDataRequest: (value: string) => void;
 }
 
 interface ILocalState {
@@ -29,6 +30,7 @@ export default class CompareFormContainer extends React.Component<IProps>  {
                 onAgeChange={this.onAgeChange}
                 onHeightChange={this.onHeightChange}
                 onIncomeChange={this.onIncomeChange}
+                onRequestData={this.onRequestData}
                 submitForm={this.submitForm}/>
         );
     }
@@ -53,10 +55,14 @@ export default class CompareFormContainer extends React.Component<IProps>  {
 
     private submitForm = () => {
         const params: CompareData = {
-            age: 35,
-            height: 85,
-            income: 3500
+            age: this.state.age? parseInt(this.state.age) : 25,
+            height: this.state.height? parseInt(this.state.height) : 90,
+            income: this.state.income? parseInt(this.state.income) : 4000,
         };
         this.props.onSendCompare(params);
     };
+
+    private onRequestData = (queryParam: string) => {
+        this.props.onSendDataRequest(queryParam)
+    }
 }
